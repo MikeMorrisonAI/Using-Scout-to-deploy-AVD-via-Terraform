@@ -1,0 +1,33 @@
+# Copy this file to terraform.tfvars and adjust values before running terraform apply.
+
+# Leave null to use the active Azure CLI subscription, or set your subscription ID explicitly.
+subscription_id = null
+
+location            = "westus2"
+resource_group_name = "rg-avd-starter"
+name_prefix         = "avd-starter"
+
+# Starter pool: one node.
+session_host_count       = 1
+maximum_sessions_allowed = 2
+
+vnet_address_space          = "10.40.0.0/16"
+session_host_subnet_prefix  = "10.40.1.0/24"
+vm_size                     = "Standard_D2s_v5"
+session_host_image_sku      = "win11-24h2-avd"
+local_admin_username        = "avdlocaladmin"
+
+# Optional. Set to your public IP/CIDR only if you need direct RDP.
+rdp_source_address_prefix = null
+
+# Add Microsoft Entra user/group object IDs to grant AVD desktop and VM sign-in access.
+avd_user_object_ids = []
+
+# Add Microsoft Entra user/group object IDs that need local admin sign-in on session hosts.
+avd_admin_object_ids = []
+
+tags = {
+  workload    = "avd"
+  environment = "starter"
+  managed_by  = "terraform"
+}
