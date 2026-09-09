@@ -1,0 +1,14 @@
+{
+  "name": "avd-terraform-webconsole",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local web console for administering the Terraform-managed Azure Virtual Desktop starter deployment.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node webconsole/server.js",
+    "check": "node --check webconsole/server.js && node --check webconsole/public/app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

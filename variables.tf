@@ -30,11 +30,11 @@ variable "name_prefix" {
 variable "session_host_count" {
   type        = number
   default     = 1
-  description = "Number of AVD session hosts to deploy."
+  description = "Number of AVD session hosts to deploy. Set to 0 to deprovision all session hosts while keeping the host pool and workspace."
 
   validation {
-    condition     = var.session_host_count >= 1 && var.session_host_count <= 10
-    error_message = "session_host_count must be between 1 and 10."
+    condition     = var.session_host_count >= 0 && var.session_host_count <= 10
+    error_message = "session_host_count must be between 0 and 10."
   }
 }
 

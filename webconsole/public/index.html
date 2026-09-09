@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVD Terraform Web Console</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Azure Virtual Desktop</p>
+        <h1>Terraform Web Console</h1>
+        <p class="lede">Administer the local Terraform-managed AVD deployment without memorizing every command like it is a personality trait.</p>
+      </div>
+      <div class="status-pill" id="operationStatus">Loading...</div>
+    </header>
+
+    <section class="grid summary-grid">
+      <article class="card">
+        <span class="label">Subscription</span>
+        <strong id="subscription">-</strong>
+        <small id="accountUser">-</small>
+      </article>
+      <article class="card">
+        <span class="label">Resource group</span>
+        <strong id="resourceGroup">-</strong>
+        <small id="workspace">-</small>
+      </article>
+      <article class="card">
+        <span class="label">Host pool</span>
+        <strong id="hostPool">-</strong>
+        <small id="hostCount">-</small>
+      </article>
+      <article class="card">
+        <span class="label">Current VM size</span>
+        <strong id="currentVmSize">-</strong>
+        <small>Terraform source of truth</small>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card panel">
+        <div class="section-heading">
+          <div>
+            <h2>Host pool configuration</h2>
+            <p>Change desired capacity and VM SKU, then apply through Terraform.</p>
+          </div>
+        </div>
+        <label class="control">
+          <span>Session hosts: <strong id="hostSliderValue">1</strong></span>
+          <input id="hostCountSlider" type="range" min="0" max="10" step="1" value="1">
+        </label>
+        <label class="control">
+          <span>VM size</span>
+          <select id="vmSizeSelect"></select>
+        </label>
+        <div class="button-row">
+          <button id="applyConfig" class="primary">Apply config</button>
+          <button id="reprovisionHosts">Reprovision hosts</button>
+        </div>
+      </article>
+
+      <article class="card panel danger-zone">
+        <div class="section-heading">
+          <div>
+            <h2>Bulk host actions</h2>
+            <p>Run fleet-wide actions against every session host VM in this deployment.</p>
+          </div>
+        </div>
+        <div class="button-row stacked">
+          <label class="control">
+            <span>Cool-down before deallocate: <strong id="cooldownValue">5</strong> minute(s)</span>
+            <input id="cooldownSlider" type="range" min="0" max="60" step="1" value="5">
+          </label>
+          <button id="deallocateHosts">Deallocate selected hosts</button>
+          <button id="deprovisionHosts" class="danger">Deprovision all hosts</button>
+        </div>
+        <p class="hint">Deallocate drains selected hosts, notifies active AVD sessions, waits for the cool-down, then stops compute. Deprovision sets host count to 0 and applies Terraform, destroying session host VMs and NICs.</p>
+      </article>
+    </section>
+
+    <section class="card panel">
+      <div class="section-heading">
+        <div>
+          <h2>Session hosts</h2>
+          <p>Registration status, heartbeat, power state, and address info.</p>
+        </div>
+        <button id="refresh">Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Name</th>
+              <th>AVD status</th>
+              <th>Power</th>
+              <th>VM size</th>
+              <th>Private IP</th>
+              <th>Last heartbeat</th>
+            </tr>
+          </thead>
+          <tbody id="hostsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card panel">
+      <div class="section-heading">
+        <div>
+          <h2>Telemetry</h2>
+          <p>Recent Azure Monitor metrics per VM. Memory appears when guest metrics are available.</p>
+        </div>
+      </div>
+      <div id="telemetry" class="telemetry-grid"></div>
+    </section>
+
+    <section class="card panel">
+      <div class="section-heading">
+        <div>
+          <h2>Operation log</h2>
+          <p>Last admin operation result from this console process.</p>
+        </div>
+      </div>
+      <pre id="log">Waiting for data...</pre>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

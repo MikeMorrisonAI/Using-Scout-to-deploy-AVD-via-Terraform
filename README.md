@@ -44,6 +44,18 @@ terraform plan -out avd.tfplan
 terraform apply avd.tfplan
 ```
 
+## Web console
+
+The `webconsole` app provides a local browser UI for this deployment. It can refresh host status, show Azure Monitor telemetry, deallocate all session host VMs, deprovision/reprovision hosts with Terraform, and update common pool settings.
+
+```powershell
+npm start
+```
+
+Open `http://localhost:3000`, then keep the terminal running while using the console. The app uses the current Azure CLI session and the local Terraform state; it does not store credentials.
+
+When deallocating or deprovisioning hosts, the console first puts selected AVD session hosts in drain mode, sends active users a save-your-work message, waits for the configured cool-down period, then proceeds with the power or Terraform action.
+
 To retrieve the generated local administrator password:
 
 ```powershell
@@ -55,4 +67,4 @@ terraform output -raw generated_local_admin_password
 - The deployment intentionally avoids public IP addresses.
 - Direct inbound RDP is disabled unless `rdp_source_address_prefix` is set.
 - The host pool RDP properties include `targetisaadjoined:i:1` and `enablerdsaadauth:i:1` for Microsoft Entra joined session host access.
-- The default host count is `1`; increase `session_host_count` later when you are ready to scale.
+- The default host count is `1`; set `session_host_count` to `0` to deprovision session hosts or increase it later when you are ready to scale.

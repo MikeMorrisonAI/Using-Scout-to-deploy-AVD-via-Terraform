@@ -13,3 +13,6 @@ terraform.tfvars
 *.auto.tfvars
 *.tfvars.json
 *.auto.tfvars.json
+node_modules/
+npm-debug.log*
+webconsole/.runtime/

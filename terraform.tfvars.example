@@ -7,7 +7,7 @@ location            = "westus2"
 resource_group_name = "rg-avd-starter"
 name_prefix         = "avd-starter"
 
-# Starter pool: one node.
+# Starter pool: one node. Set to 0 to deprovision all session hosts.
 session_host_count       = 1
 maximum_sessions_allowed = 2
 
