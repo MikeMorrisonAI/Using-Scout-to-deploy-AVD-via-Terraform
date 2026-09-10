@@ -2,6 +2,8 @@
 
 ![AVD Web Console](assets/AVDWebConsole.png)
 
+---
+
 Terraform project that deploys a starter Azure Virtual Desktop environment: one pooled Windows 11 session host, Entra ID join, workspace, host pool, desktop app group, networking, NSG rules, and optional user role assignments.
 
 This folder deploys a starter Azure Virtual Desktop environment with:
@@ -48,7 +50,7 @@ terraform apply avd.tfplan
 
 ## Web Console
 
-The `webconsole` app provides a local browser UI for this deployment. It can refresh host status, show Azure Monitor telemetry, deallocate all session host VMs, deprovision/reprovision hosts with Terraform, and more.
+The `webconsole` app provides a local browser UI for this deployment. It can refresh host status, show Azure Monitor telemetry, deallocate all session host VMs, deprovision/reprovision hosts with Terraform, and manage maintenance operations.
 
 ### Installation
 
